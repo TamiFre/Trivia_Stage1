@@ -11,6 +11,7 @@ namespace Trivia_Stage1
             TriviaScreensImp screens = new TriviaScreensImp();
             ui = new UIMain(loginMenu, screens);
             ui.ApplicationStart();
+            
         }
     }
 }

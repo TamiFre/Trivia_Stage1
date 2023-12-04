@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Trivia_Stage1.Models;
 
 namespace Trivia_Stage1.UI
 {
@@ -107,9 +108,60 @@ namespace Trivia_Stage1.UI
         }
         public void ShowGame()
         {
-            Console.WriteLine("Not implemented yet! Press any key to continue...");
-            Console.ReadKey(true);
+            ShowQuestionAndAnswers();
+            Console.WriteLine("What is your final answer?");
+            int pans = int.Parse(Console.ReadLine());
+            if()//שמנו את התשובות במערך של מספרים ועכשיו אנחנו רוצים למצוא את התשובה הנכונה ולראוץ אפ המשתמש צדק
+
+
+
+
+
         }
+
+        TriviaContext context = new TriviaContext();
+        int[] ansArrNumbers = new int[4];
+        public void ShowQuestionAndAnswers()
+        {
+            Random rnd = new Random();
+            int questionId=rnd.Next(1, context.Qs.Count() + 1);
+            
+            Q question = context.GetQ(questionId);
+            if (question!=null)
+                Console.WriteLine($"THEEEEE QUESTION ISSSSSS: {question}");
+
+            // מראה שאלה בץקווה
+
+            string correctAnswer = context.GetAnsCorrect(questionId);
+            string answer1 = context.GetAns1(questionId);
+            string answer2 = context.GetAns2(questionId);
+            string answer3 = context.GetAns3(questionId);
+            int index = rnd.Next(0, 4);
+            string[] ansArr = new string[4];
+            
+           
+            int tempIndex = 0;
+            ansArr[0] = correctAnswer;
+            ansArr[1] = answer1;
+            ansArr[2] = answer2;
+            ansArr[3] = answer3;
+            for (int i = 0; i < ansArr.Length; i++)
+            {
+                while (index == tempIndex)
+                {
+                    index = rnd.Next(0, 4);
+                }
+                Console.WriteLine(ansArr[index]);
+                ansArrNumbers[i] = index;
+                tempIndex = index;
+
+            }
+        }
+
+
+       
+
+        
         public void ShowProfile()
         {
             Console.WriteLine("Not implemented yet! Press any key to continue...");
