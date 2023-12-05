@@ -13,6 +13,7 @@ namespace Trivia_Stage1.UI
 
         //Place here any state you would like to keep during the app life time
         //For example, player login details...
+        Player player = new Player();
 
 
         //Implememnt interface here
@@ -97,22 +98,62 @@ namespace Trivia_Stage1.UI
 
         public void ShowAddQuestion()
         {
-            Console.WriteLine("Not implemented yet! Press any key to continue...");
-            Console.ReadKey(true);
+            try
+            {
+            List<Q> questions = context.GetAddedQs(player.PlayerId);
+            if (questions != null)
+               {
+                 foreach (var q in questions)
+                 {
+                      Console.WriteLine($"{q.Title.ToString()}");
+                 }
+               }
+            
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            
+
         }
 
-        public void ShowPendingQuestions()
+        public void ShowPendingQuestions() //(for Gal!)
         {
-            Console.WriteLine("Not implemented yet! Press any key to continue...");
-            Console.ReadKey(true);
+            try
+            {
+                List<Q> questions = context.GetPendingQs();
+                if (questions != null)
+                {
+                    foreach (var q in questions)
+                    {
+                        Console.WriteLine($"{q.Subject.SubjectName} {q.Title.ToString()}");
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            { Console.WriteLine(ex); }
+            
         }
         public void ShowGame()
         {
             ShowQuestionAndAnswers();
             Console.WriteLine("What is your final answer?");
             int pans = int.Parse(Console.ReadLine());
-            if()//שמנו את התשובות במערך של מספרים ועכשיו אנחנו רוצים למצוא את התשובה הנכונה ולראוץ אפ המשתמש צדק
+            if (ansArrNumbers[pans] == 0)
+            {
+                Console.WriteLine("Congrats! You were right! +10 points.");
+                context.SetPoints(player.PlayerId, context.GetPoints(player.PlayerId) + 10);
 
+            }//שמנו את התשובות במערך של מספרים ועכשיו אנחנו רוצים למצוא את התשובה הנכונה ולראוץ אפ המשתמש צדק
+            else
+            {
+                Console.WriteLine("Nice try! But you were wrong, you should kill yourself.");
+                Console.WriteLine("But because this game does not have the authority to kill you, -5 points");
+                context.SetPoints(player.PlayerId, context.GetPoints(player.PlayerId) -5);
+            }
 
 
 
@@ -147,12 +188,13 @@ namespace Trivia_Stage1.UI
             ansArr[3] = answer3;
             for (int i = 0; i < ansArr.Length; i++)
             {
-                while (index == tempIndex)
+                while (index == tempIndex || ansArr[index] == null)
                 {
                     index = rnd.Next(0, 4);
                 }
                 Console.WriteLine(ansArr[index]);
                 ansArrNumbers[i] = index;
+                ansArr[index] = null;
                 tempIndex = index;
 
             }

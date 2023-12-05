@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Trivia_Stage1.Models;
@@ -30,6 +32,26 @@ namespace Trivia_Stage1.Models;
     {
         return this.Qs.Where(x => x.Qid == i).FirstOrDefault().A3;
     }
+    public int? GetPoints(int i)
+    {
+        return this.Players.Where(x => x.PlayerId == i).FirstOrDefault().Points;
+    }
+    public void SetPoints(int i, int? j)
+    {
+        this.Players.Where(x => x.PlayerId == i).FirstOrDefault().Points = j;
+    }
+
+    public List<Q> GetPendingQs()
+    {
+        return this.Qs.Where(x => x.StatusId == 3).Include(q=>q.Subject).Include(question=>question.Player).ToList();   
+    }
+
+    public List<Q> GetAddedQs(int i)
+    {
+        return this.Qs.Where(x=> x.PlayerId == i).ToList();
+    }
+
+    
 
 }
 
