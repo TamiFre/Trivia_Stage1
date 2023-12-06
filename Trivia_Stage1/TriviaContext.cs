@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -39,6 +40,17 @@ namespace Trivia_Stage1.Models;
     {
         this.Players.Where(x => x.PlayerId == i).FirstOrDefault().Points = j;
     }
-
+    public string GetPlayerName(int i)
+    {
+        return this.Players.Where(x => x.PlayerId == i).FirstOrDefault().PlayerName;
+    }
+    public string GetPass(int i)
+    {
+        return this.Players.Where(x => x.PlayerId == i).FirstOrDefault().Pass;
+    }
+    public Player Login(string name, string pass)
+    {
+        return this.Players.Where(x => x.PlayerName == name).Include(x => x.Pass == pass).FirstOrDefault();
+    }
 }
 

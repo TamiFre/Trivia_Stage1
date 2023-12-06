@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Storage.Internal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,15 +15,21 @@ namespace Trivia_Stage1.UI
         //Place here any state you would like to keep during the app life time
         //For example, player login details...
         Player player = new Player();
-
+        //לשמור את המשתמש שהתחבר
 
         //Implememnt interface here
         public bool ShowLogin()
         {
-            Console.WriteLine("Not implemented yet! Press any key to continue...");
-            Console.ReadKey(true);
-            return true;
+            Console.WriteLine("Please enter Username");
+            string name = Console.ReadLine();   
+            Console.WriteLine("Please enter Password");
+            string pass = Console.ReadLine();
+            if (Login(name, pass) != null)
+                return true;
+            return false;
+
         }
+
         public bool ShowSignUp()
         {
             //Logout user if anyone is logged in!
@@ -237,6 +244,11 @@ namespace Trivia_Stage1.UI
         private bool IsNameValid(string name)
         {
             return !string.IsNullOrEmpty(name) && name.Length >= 3;
+        }
+        private Player Login(string name, string pass)
+        {
+           
+            return context.Login(name, pass);
         }
     }
 }
