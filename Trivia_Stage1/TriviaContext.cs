@@ -40,5 +40,20 @@ namespace Trivia_Stage1.Models;
         this.Players.Where(x => x.PlayerId == i).FirstOrDefault().Points = j;
     }
 
+    public string GetPlayerName(int i)
+    {
+        return this.Players.Where(x => x.PlayerId == i).FirstOrDefault().PlayerName;
+    }
+
+    public string GetPlayerMail(int i)
+    {
+        return this.Players.Where(x => x.PlayerId == i).FirstOrDefault().Mail;
+    }
+
+    public Darga GetPlayerDarga(int i)
+    {
+        return this.Players.Where(x => x.PlayerId == i).FirstOrDefault().Darga;
+    }
+
 }
 
