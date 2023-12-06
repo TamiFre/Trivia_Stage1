@@ -32,13 +32,14 @@ namespace Trivia_Stage1.Models;
     {
         return this.Qs.Where(x => x.Qid == i).FirstOrDefault().A3;
     }
-    public int? GetPoints(int i)
+    public List<Q> GetPendingQs()
     {
-        return this.Players.Where(x => x.PlayerId == i).FirstOrDefault().Points;
+        return this.Qs.Where(x => x.StatusId == 3).Include(q => q.Subject).Include(question => question.Player).ToList();
     }
-    public void SetPoints(int i, int? j)
+
+    public List<Q> GetAddedQs(int i)
     {
-        this.Players.Where(x => x.PlayerId == i).FirstOrDefault().Points = j;
+        return this.Qs.Where(x=> x.PlayerId == i).ToList();
     }
     public string GetPlayerName(int i)
     {

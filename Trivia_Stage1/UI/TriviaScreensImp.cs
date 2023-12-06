@@ -109,16 +109,10 @@ namespace Trivia_Stage1.UI
             Console.ReadKey(true);
         }
 
-        public void ShowPendingQuestions() //(for Gal!)
+        public void ShowPendingQuestions()
         {
-            for (int i = 0; i<context.Qs.Count();i++)
-            {
-                if (Qs[i].StatusId.Get == 3)
-                {
-                    Console.WriteLine(Qs[i]);
-                }
-            }
-
+            Console.WriteLine("Not implemented yet! Press any key to continue...");
+            Console.ReadKey(true);
         }
         public void ShowGame()
         {
@@ -189,8 +183,11 @@ namespace Trivia_Stage1.UI
         
         public void ShowProfile()
         {
-            Console.WriteLine("Not implemented yet! Press any key to continue...");
-            Console.ReadKey(true);
+            Console.WriteLine($"Hello {context.GetPlayerName(player.PlayerId)}, welcome back!");
+            Console.WriteLine("Your private details are:");
+            Console.WriteLine($"Your Email is: {context.GetPlayerMail(player.PlayerId)}");
+            Console.WriteLine($"Your Score is: {context.GetPlayerMail(player.PlayerId)}");
+            Console.WriteLine($"Your Rank is: {context.GetPlayerMail(player.PlayerId)}");
         }
 
 
