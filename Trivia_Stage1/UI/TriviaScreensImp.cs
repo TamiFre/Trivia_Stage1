@@ -98,44 +98,14 @@ namespace Trivia_Stage1.UI
 
         public void ShowAddQuestion()
         {
-            try
-            {
-            List<Q> questions = context.GetAddedQs(player.PlayerId);
-            if (questions != null)
-               {
-                 foreach (var q in questions)
-                 {
-                      Console.WriteLine($"{q.Title.ToString()}");
-                 }
-               }
-            
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-
-            
-
+            Console.WriteLine("Not implemented yet! Press any key to continue...");
+            Console.ReadKey(true);
         }
 
-        public void ShowPendingQuestions() //(for Gal!)
+        public void ShowPendingQuestions()
         {
-            try
-            {
-                List<Q> questions = context.GetPendingQs();
-                if (questions != null)
-                {
-                    foreach (var q in questions)
-                    {
-                        Console.WriteLine($"{q.Subject.SubjectName} {q.Title.ToString()}");
-
-                    }
-                }
-            }
-            catch (Exception ex)
-            { Console.WriteLine(ex); }
-            
+            Console.WriteLine("Not implemented yet! Press any key to continue...");
+            Console.ReadKey(true);
         }
         public void ShowGame()
         {
@@ -206,8 +176,11 @@ namespace Trivia_Stage1.UI
         
         public void ShowProfile()
         {
-            Console.WriteLine("Not implemented yet! Press any key to continue...");
-            Console.ReadKey(true);
+            Console.WriteLine($"Hello {context.GetPlayerName(player.PlayerId)}, welcome back!");
+            Console.WriteLine("Your private details are:");
+            Console.WriteLine($"Your Email is: {context.GetPlayerMail(player.PlayerId)}");
+            Console.WriteLine($"Your Score is: {context.GetPlayerMail(player.PlayerId)}");
+            Console.WriteLine($"Your Rank is: {context.GetPlayerMail(player.PlayerId)}");
         }
 
 
