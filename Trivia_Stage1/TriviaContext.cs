@@ -32,6 +32,10 @@ namespace Trivia_Stage1.Models;
     {
         return this.Qs.Where(x => x.Qid == i).FirstOrDefault().A3;
     }
+    public List<Q> GetPendingQs()
+    {
+        return this.Qs.Where(x => x.StatusId == 3).Include(q => q.Subject).Include(question => question.Player).ToList();
+    }
 
     public List<Q> GetAddedQs(int i)
     {
