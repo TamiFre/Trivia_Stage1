@@ -51,7 +51,7 @@ namespace Trivia_Stage1.Models;
     }
     public Player Login(string name, string pass)
     {
-        return this.Players.Where(x => x.PlayerName == name).Include(x => x.Pass == pass).FirstOrDefault();
+        return this.Players.Where(x => x.PlayerName == name&&  x.Pass == pass).FirstOrDefault();
     }
 }
 
