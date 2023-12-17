@@ -14,7 +14,11 @@ namespace Trivia_Stage1.UI
 
         //Place here any state you would like to keep during the app life time
         //For example, player login details...
-        Player player = new Player();
+        private Player player =new Player();
+        TriviaContext context = new TriviaContext();
+        int[] ansArrNumbers = new int[4];
+       
+
 
 
         //לשמור את המשתמש שהתחבר
@@ -49,21 +53,38 @@ namespace Trivia_Stage1.UI
                 mail = Console.ReadLine();
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
-            if (Login(name, pass, mail) != null)
+            //if (Login(name, pass, mail) )
+            //{
+            //    context.SetPlayerMail(mail, player.PlayerId);
+            //    context.SetPlayerName(name, player.PlayerId);
+            //    context.SetPlayerPass(pass, player.PlayerId);
+            //    Console.WriteLine("You've successfully logged in");
+            //    return true;
+            //}
+            //Console.WriteLine("Wrong email/password/username");
+            //return false;
+            Player player2 = context.Login(name, pass, mail);
+            if (player2 != null)
             {
-                context.SetPlayerMail(mail, player.PlayerId);
-                context.SetPlayerName(name, player.PlayerId);
-                context.SetPlayerPass(pass, player.PlayerId);
+                Console.WriteLine("Success");
+                Thread.Sleep(3000);
+                this.player = player2;
                 return true;
             }
-               
+
+
+            Console.WriteLine("fail");
+            Thread.Sleep(3000);
             return false;
+
+
+
 
         }
 
 
 
-       
+
 
         public bool ShowSignUp()
         {
@@ -150,40 +171,73 @@ namespace Trivia_Stage1.UI
             if (player.Points >= 100 || player.DargaId == 2 || player.DargaId == 3)
             {
                 Q newQ = new Q();
-                try  // תופס אם יש שגיאה לדוגמה אם מישהו מכניס מספר במקום סטרינג
-                {
-                    Console.WriteLine("Enter new question please");
-                    string newTitle = Console.ReadLine();
-                    context.SetTitle(newTitle, newQ.Qid);
+                string? newTitle = "";
+                string? newSub = "";
+                string? newCorrect = "";
+                string? newWrong1 = "";
+                string? newWrong2 = "";
+                string? newWrong3 = "";
 
-                    Console.WriteLine("Enter subject");
-                    string newSub = Console.ReadLine();
+
+
+
+                Console.WriteLine("Enter new question please");
+                try
+                {
+                    newTitle = Console.ReadLine();
+                }
+                catch (Exception ex) { Console.WriteLine(ex.Message); }
+                context.SetTitle(newTitle, newQ.Qid);
+
+                Console.WriteLine("Enter subject");
+                    try
+                    {
+                        newSub = Console.ReadLine();
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex.Message); }
                     context.SetSubject(newSub, newQ.Qid);
 
                     Console.WriteLine("Enter the correct answer");
-                    string newCorrect = Console.ReadLine();
+                    try
+                    {
+                        newCorrect = Console.ReadLine();
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex.Message); }
                     context.SetCorrectAns(newCorrect, newQ.Qid);
 
                     Console.WriteLine("Enter wrong answer #1");
-                    string newWrong1 = Console.ReadLine();
+                    try
+                    {
+                        newWrong1 = Console.ReadLine();
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex.Message); }
                     context.SetA1(newWrong1, newQ.Qid);
 
                     Console.WriteLine("Enter wrong answer #2");
-                    string newWrong2 = Console.ReadLine();
+                    try
+                    {
+                        newWrong2 = Console.ReadLine();
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex.Message); }
                     context.SetA2(newWrong2, newQ.Qid);
 
                     Console.WriteLine("Enter wrong answer #3");
-                    string newWrong3 = Console.ReadLine();
+                    try
+                    {
+                        newWrong3 = Console.ReadLine();
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex.Message); }
                     context.SetA1(newWrong3, newQ.Qid);
-                }
-                catch (Exception ex)
-                { 
-                Console.WriteLine(ex.Message); 
-                }
+               
+                
             }
             else
+
+            { 
             Console.WriteLine("You are not allowed to add a question. get tf out of here");
-            
+            Thread.Sleep(3000);
+            }
+
         }
 
 
@@ -225,8 +279,11 @@ namespace Trivia_Stage1.UI
 
                 }
             }
-            else
+            else 
+            { 
                 Console.WriteLine("You are not allowed here. Get tf out");
+                Thread.Sleep(3000);
+            }
         }
 
 
@@ -242,6 +299,7 @@ namespace Trivia_Stage1.UI
             {
                 Console.WriteLine("Congrats! You were right! +10 points.");
                 context.SetPoints(player.PlayerId, context.GetPoints(player.PlayerId) + 10);
+                Thread.Sleep(3000);
 
             }//שמנו את התשובות במערך של מספרים ועכשיו אנחנו רוצים למצוא את התשובה הנכונה ולראוץ אפ המשתמש צדק
             else
@@ -249,15 +307,14 @@ namespace Trivia_Stage1.UI
                 Console.WriteLine("Nice try! But you were wrong, you should kill yourself.");
                 Console.WriteLine("But because this game does not have the authority to kill you, -5 points");
                 context.SetPoints(player.PlayerId, context.GetPoints(player.PlayerId) -5);
+                Thread.Sleep(3000);
             }
 
         }
 
 
 
-        TriviaContext context = new TriviaContext();
-        int[] ansArrNumbers = new int[4];
-        
+       
         
         
         public void ShowQuestionAndAnswers()
@@ -267,7 +324,7 @@ namespace Trivia_Stage1.UI
             
             Q question = context.GetQ(questionId);
             if (question!=null)
-                Console.WriteLine($"THEEEEE QUESTION ISSSSSS: {question}");
+                Console.WriteLine($"THEEEEE QUESTION ISSSSSS: {context.GetTitle(question.Qid)}");
 
             // מראה שאלה בץקווה
 
