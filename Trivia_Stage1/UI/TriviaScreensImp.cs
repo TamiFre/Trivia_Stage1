@@ -15,20 +15,55 @@ namespace Trivia_Stage1.UI
         //Place here any state you would like to keep during the app life time
         //For example, player login details...
         Player player = new Player();
+
+
         //לשמור את המשתמש שהתחבר
+
+
+        private Player Login(string name, string pass, string mail)
+        {
+            return context.Login(name, pass, mail);
+        }
 
         //Implememnt interface here
         public bool ShowLogin()
         {
+            string name = "";
+            string pass = "";
+            string mail = "";
             Console.WriteLine("Please enter Username");
-            string name = Console.ReadLine();   
+            try
+            {
+                name = Console.ReadLine();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
             Console.WriteLine("Please enter Password");
-            string pass = Console.ReadLine();
-            if (Login(name, pass) != null)
+            try
+            {
+                pass = Console.ReadLine();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            Console.WriteLine("Please enter Email");
+            try
+            {
+                mail = Console.ReadLine();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            if (Login(name, pass, mail) != null)
+            {
+                context.SetPlayerMail(mail, player.PlayerId);
+                context.SetPlayerName(name, player.PlayerId);
+                context.SetPlayerPass(pass, player.PlayerId);
                 return true;
+            }
+               
             return false;
 
         }
+
+
+
+       
 
         public bool ShowSignUp()
         {
@@ -103,17 +138,101 @@ namespace Trivia_Stage1.UI
             return (false);
         }
 
+
+
+
+
+
+        //לשאול האם התנאים קורים לפלייר ואם כן להראות את כל השאלות ולתת לו להוסיף שאלה
+        //להוסיף את השאלה בשורה נפרדת שבה הוא יכתוב את כל מה שצריך לשאלה
         public void ShowAddQuestion()
         {
-            Console.WriteLine("Not implemented yet! Press any key to continue...");
-            Console.ReadKey(true);
+            if (player.Points >= 100 || player.DargaId == 2 || player.DargaId == 3)
+            {
+                Q newQ = new Q();
+                try  // תופס אם יש שגיאה לדוגמה אם מישהו מכניס מספר במקום סטרינג
+                {
+                    Console.WriteLine("Enter new question please");
+                    string newTitle = Console.ReadLine();
+                    context.SetTitle(newTitle, newQ.Qid);
+
+                    Console.WriteLine("Enter subject");
+                    string newSub = Console.ReadLine();
+                    context.SetSubject(newSub, newQ.Qid);
+
+                    Console.WriteLine("Enter the correct answer");
+                    string newCorrect = Console.ReadLine();
+                    context.SetCorrectAns(newCorrect, newQ.Qid);
+
+                    Console.WriteLine("Enter wrong answer #1");
+                    string newWrong1 = Console.ReadLine();
+                    context.SetA1(newWrong1, newQ.Qid);
+
+                    Console.WriteLine("Enter wrong answer #2");
+                    string newWrong2 = Console.ReadLine();
+                    context.SetA2(newWrong2, newQ.Qid);
+
+                    Console.WriteLine("Enter wrong answer #3");
+                    string newWrong3 = Console.ReadLine();
+                    context.SetA1(newWrong3, newQ.Qid);
+                }
+                catch (Exception ex)
+                { 
+                Console.WriteLine(ex.Message); 
+                }
+            }
+            else
+            Console.WriteLine("You are not allowed to add a question. get tf out of here");
+            
         }
 
+
+
+
+
+        
+        //לשאול האם התנאים קורים לפלייר ואם כן להראות לו בלולאה את השאלות ולשאול אם לאשר או לא
+        //לשנות את הסטטוס של השאלה לאפרובד או דיקליינד
         public void ShowPendingQuestions()
         {
-            Console.WriteLine("Not implemented yet! Press any key to continue...");
-            Console.ReadKey(true);
+            if (player.DargaId == 3)
+            {
+                int i = 0;
+                string continueStatus = "No";
+                while (continueStatus != "No" || i>context.GetPendingQs().Count)
+                {
+                    try  // תופס אם יש שגיאה לדוגמה אם מישהו מכניס מספר במקום סטרינג
+                    {
+                        Console.WriteLine(context.GetPendingQs()[i]);
+                        Console.WriteLine("Would you like to approve the question? If yes press Y");
+                        string wannaAprrove = Console.ReadLine();
+                        if (wannaAprrove == "Y")
+                        {
+                            context.SetQStatusToApprove(context.GetPendingQs()[i].Qid);
+                        }
+                        else
+                        {
+                            context.SetQStatusToDeclined(context.GetPendingQs()[i].Qid);
+                        }
+                        i++;
+                        Console.WriteLine("Would you like to continue approving questions? If not write No");
+                        continueStatus = Console.ReadLine();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
+                }
+            }
+            else
+                Console.WriteLine("You are not allowed here. Get tf out");
         }
+
+
+
+
+
         public void ShowGame()
         {
             ShowQuestionAndAnswers();
@@ -132,13 +251,15 @@ namespace Trivia_Stage1.UI
                 context.SetPoints(player.PlayerId, context.GetPoints(player.PlayerId) -5);
             }
 
-
-
-
         }
+
+
 
         TriviaContext context = new TriviaContext();
         int[] ansArrNumbers = new int[4];
+        
+        
+        
         public void ShowQuestionAndAnswers()
         {
             Random rnd = new Random();
@@ -158,22 +279,20 @@ namespace Trivia_Stage1.UI
             string[] ansArr = new string[4];
             
            
-            int tempIndex = 0;
+            
             ansArr[0] = correctAnswer;
             ansArr[1] = answer1;
             ansArr[2] = answer2;
             ansArr[3] = answer3;
             for (int i = 0; i < ansArr.Length; i++)
             {
-                while (index == tempIndex || ansArr[index] == null)
+                while ( ansArr[index] == null)
                 {
                     index = rnd.Next(0, 4);
                 }
                 Console.WriteLine(ansArr[index]);
                 ansArrNumbers[i] = index;
                 ansArr[index] = null;
-                tempIndex = index;
-
             }
         }
 
@@ -186,8 +305,72 @@ namespace Trivia_Stage1.UI
             Console.WriteLine($"Hello {context.GetPlayerName(player.PlayerId)}, welcome back!");
             Console.WriteLine("Your private details are:");
             Console.WriteLine($"Your Email is: {context.GetPlayerMail(player.PlayerId)}");
-            Console.WriteLine($"Your Score is: {context.GetPlayerMail(player.PlayerId)}");
-            Console.WriteLine($"Your Rank is: {context.GetPlayerMail(player.PlayerId)}");
+            Console.WriteLine($"The amount of points you have: {context.GetPoints(player.PlayerId)}");
+            Console.WriteLine($"Your Rank is: {context.GetDargaName(player.PlayerId)}");
+            Console.WriteLine("Do you want to want to change any of your private details?");
+            string answer = "start";
+            string name = "";
+            string mail = "";
+            string pass = "";
+
+            try 
+            { 
+            answer = Console.ReadLine();
+            }
+            catch (Exception ex)
+            { Console.WriteLine(ex.Message); }
+
+
+
+            if (answer == "yes")
+            {
+                
+                Console.WriteLine("Do you want to change your name?");
+                try 
+                { 
+                answer = Console.ReadLine();
+                }
+                catch (Exception ex) 
+                { 
+                    Console.WriteLine(ex.Message); 
+                }
+                if (answer == "yes")
+                {
+                    Console.WriteLine("Enter you new name");
+                    try
+                    {
+                        name = Console.ReadLine();
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex.Message); }
+                    context.SetPlayerName(name, player.PlayerId);
+                }
+                Console.WriteLine("Do you want to change your mail?");
+                answer = Console.ReadLine();
+                if (answer == "yes")
+                {
+                    
+                    Console.WriteLine("Enter you new mail");
+                    try
+                    {
+                        mail = Console.ReadLine();
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex.Message); }
+                    context.SetPlayerMail(mail, player.PlayerId);
+                }
+                Console.WriteLine("Do you want to change your password?");
+                answer = Console.ReadLine();
+                if (answer == "yes")
+                {
+                    Console.WriteLine("Enter you new password");
+                    try 
+                    { 
+                    pass = (Console.ReadLine());
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex.Message); }
+                    context.SetPlayerPass(pass, player.PlayerId);
+                }
+
+            }
         }
 
 
@@ -242,10 +425,6 @@ namespace Trivia_Stage1.UI
         {
             return !string.IsNullOrEmpty(name) && name.Length >= 3;
         }
-        private Player Login(string name, string pass)
-        {
-           
-            return context.Login(name, pass);
-        }
+        
     }
 }
