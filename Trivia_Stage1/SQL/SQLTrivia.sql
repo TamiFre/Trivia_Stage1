@@ -64,7 +64,7 @@ INSERT INTO Qs (Title, AnsCorrect, A1, A2, A3,PlayerID, SubjectID, StatusID) VAL
 INSERT INTO Qs (Title, AnsCorrect, A1, A2, A3,PlayerID, SubjectID, StatusID) VALUES ( 'How many Harry Potter books ae there?', '7', '5', '8','12', 1, 4, 1);
 INSERT INTO Qs (Title, AnsCorrect, A1, A2, A3,PlayerID, SubjectID, StatusID) VALUES ( 'What year did Hitler come to power?', '1933', '1939', '1925','1942', 1, 5, 1);
 
-
+SELECT * FROM Players
 
 
 

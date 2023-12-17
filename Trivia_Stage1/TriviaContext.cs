@@ -49,10 +49,19 @@ namespace Trivia_Stage1.Models;
     {
         return this.Players.Where(x => x.PlayerId == i).FirstOrDefault().Pass;
     }
-    public Player Login(string name, string pass,string mail)
+    public Player Login(string name, string pass, string mail)
     {
-        return this.Players.Where(x => x.PlayerName == name&&  x.Pass == pass&&x.Mail==mail).FirstOrDefault();
+        foreach (Player p in Players)
+        {
+            if (p.Pass == pass && p.PlayerName == name && p.Mail == mail)
+                return p;
+        }
+        return null;
     }
+    //public bool Login(string name, string pass, string mail)
+    //{
+    //    return this.Players.Where(x => x.PlayerName == name && x.Pass == pass && x.Mail == mail) != null;
+    //}
     public void SetTitle(string? title,int i)
     {
         this.Qs.Where(x=>x.Qid ==i).FirstOrDefault().Title = title;
