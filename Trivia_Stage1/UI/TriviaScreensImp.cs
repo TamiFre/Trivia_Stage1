@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.Internal;
+﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -177,52 +179,47 @@ namespace Trivia_Stage1.UI
                 
                     
                     Console.WriteLine("Enter new question please");
-                    try
-                    {
+                    
                         newTitle = Console.ReadLine();
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex.Message); }
-                    context.SetTitle(newTitle, newQ.Qid);
+                   
+                  //  context.SetTitle(newTitle, newQ.Qid);
 
                     Console.WriteLine("Enter subject");
-                    try
-                    {
+                   
                         newSub = Console.ReadLine();
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex.Message); }
-                    context.SetSubject(newSub, newQ.Qid);
+                   
+                  //  context.SetSubject(newSub, newQ.Qid);
 
                     Console.WriteLine("Enter the correct answer");
-                    try
-                    {
+                 
                         newCorrect = Console.ReadLine();
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex.Message); }
-                    context.SetCorrectAns(newCorrect, newQ.Qid);
+                    
+                //    context.SetCorrectAns(newCorrect, newQ.Qid);
 
                     Console.WriteLine("Enter wrong answer #1");
-                    try
-                    {
+                    
                         newWrong1 = Console.ReadLine();
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex.Message); }
-                    context.SetA1(newWrong1, newQ.Qid);
+                    
+                //    context.SetA1(newWrong1, newQ.Qid);
 
                     Console.WriteLine("Enter wrong answer #2");
-                    try
-                    {
+                   
                         newWrong2 = Console.ReadLine();
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex.Message); }
-                    context.SetA2(newWrong2, newQ.Qid);
+                    
+               //     context.SetA2(newWrong2, newQ.Qid);
 
                     Console.WriteLine("Enter wrong answer #3");
-                    try
-                    {
+                   
                         newWrong3 = Console.ReadLine();
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex.Message); }
-                    context.SetA1(newWrong3, newQ.Qid);
+                   
+                  //  context.SetA1(newWrong3, newQ.Qid);
+                  newQ.Title = newTitle;
+                newQ.A1 = newWrong1;
+                newQ.A2 = newWrong2;
+                newQ.A3 = newWrong3;
+                newQ.AnsCorrect= newCorrect;
+
+                context.AddNewQuestion(newQ);
                
                 
             }
@@ -250,8 +247,7 @@ namespace Trivia_Stage1.UI
                 string continueStatus = "No";
                 while (continueStatus != "No" || i>context.GetPendingQs().Count)
                 {
-                    try  // תופס אם יש שגיאה לדוגמה אם מישהו מכניס מספר במקום סטרינג
-                    {
+                   
                         Console.WriteLine(context.GetPendingQs()[i]);
                         Console.WriteLine("Would you like to approve the question? If yes press Y");
                         string wannaAprrove = Console.ReadLine();
@@ -266,11 +262,8 @@ namespace Trivia_Stage1.UI
                         i++;
                         Console.WriteLine("Would you like to continue approving questions? If not write No");
                         continueStatus = Console.ReadLine();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
+                   
+                   
 
                 }
             }
@@ -365,35 +358,25 @@ namespace Trivia_Stage1.UI
             string mail = "";
             string pass = "";
 
-            try 
-            { 
+           
             answer = Console.ReadLine();
-            }
-            catch (Exception ex)
-            { Console.WriteLine(ex.Message); }
-
+            
+        
 
 
             if (answer == "yes")
             {
                 
                 Console.WriteLine("Do you want to change your name?");
-                try 
-                { 
+               
                 answer = Console.ReadLine();
-                }
-                catch (Exception ex) 
-                { 
-                    Console.WriteLine(ex.Message); 
-                }
+             
                 if (answer == "yes")
                 {
                     Console.WriteLine("Enter you new name");
-                    try
-                    {
+                   
                         name = Console.ReadLine();
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex.Message); }
+                  
                     context.SetPlayerName(name, player.PlayerId);
                 }
                 Console.WriteLine("Do you want to change your mail?");
@@ -402,11 +385,9 @@ namespace Trivia_Stage1.UI
                 {
                     
                     Console.WriteLine("Enter you new mail");
-                    try
-                    {
+                   
                         mail = Console.ReadLine();
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex.Message); }
+                   
                     context.SetPlayerMail(mail, player.PlayerId);
                 }
                 Console.WriteLine("Do you want to change your password?");
@@ -414,11 +395,9 @@ namespace Trivia_Stage1.UI
                 if (answer == "yes")
                 {
                     Console.WriteLine("Enter you new password");
-                    try 
-                    { 
+                    
                     pass = (Console.ReadLine());
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex.Message); }
+                    
                     context.SetPlayerPass(pass, player.PlayerId);
                 }
 

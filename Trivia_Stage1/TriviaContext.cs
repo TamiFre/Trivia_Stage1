@@ -145,5 +145,14 @@ namespace Trivia_Stage1.Models;
     {
         this.Players.Where(x => x.PlayerId == i).FirstOrDefault().Pass = pass;
     }
+    public void AddNewQuestion(Q question)
+    {
+        this.Qs.Add(question);
+        try
+        {
+            this.SaveChanges();
+        }
+        catch(Exception ex) { Console.WriteLine(ex.Message    ); }
+    }
 }
 
