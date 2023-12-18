@@ -14,10 +14,9 @@ namespace Trivia_Stage1.UI
 
         //Place here any state you would like to keep during the app life time
         //For example, player login details...
-        private Player player =new Player();
+        Player player = new Player();
         TriviaContext context = new TriviaContext();
         int[] ansArrNumbers = new int[4];
-       
 
 
 
@@ -32,9 +31,9 @@ namespace Trivia_Stage1.UI
         //Implememnt interface here
         public bool ShowLogin()
         {
-            string name = "";
-            string pass = "";
-            string mail = "";
+            string name="";
+            string pass="";
+            string mail="";
             Console.WriteLine("Please enter Username");
             try
             {
@@ -67,17 +66,13 @@ namespace Trivia_Stage1.UI
             if (player2 != null)
             {
                 Console.WriteLine("Success");
-                Thread.Sleep(3000);
                 this.player = player2;
                 return true;
             }
 
 
             Console.WriteLine("fail");
-            Thread.Sleep(3000);
             return false;
-
-
 
 
         }
@@ -171,25 +166,25 @@ namespace Trivia_Stage1.UI
             if (player.Points >= 100 || player.DargaId == 2 || player.DargaId == 3)
             {
                 Q newQ = new Q();
-                string? newTitle = "";
-                string? newSub = "";
-                string? newCorrect = "";
-                string? newWrong1 = "";
-                string? newWrong2 = "";
-                string? newWrong3 = "";
+                string newTitle = "";
+                string newSub = "";
+                string newCorrect = "";
+                string newWrong1 = "";
+                string newWrong2 = "";
+                string newWrong3 = "";
 
 
+                
+                    
+                    Console.WriteLine("Enter new question please");
+                    try
+                    {
+                        newTitle = Console.ReadLine();
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex.Message); }
+                    context.SetTitle(newTitle, newQ.Qid);
 
-
-                Console.WriteLine("Enter new question please");
-                try
-                {
-                    newTitle = Console.ReadLine();
-                }
-                catch (Exception ex) { Console.WriteLine(ex.Message); }
-                context.SetTitle(newTitle, newQ.Qid);
-
-                Console.WriteLine("Enter subject");
+                    Console.WriteLine("Enter subject");
                     try
                     {
                         newSub = Console.ReadLine();
